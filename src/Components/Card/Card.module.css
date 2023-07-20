@@ -1,0 +1,27 @@
+.card__container {
+  display: flex;
+  flex-direction: column;
+  max-width: 235px;
+  transition: transform 0.2s; /* Add a transition for the 'transform' property */
+}
+
+.placeholder {
+  max-width: 100%;
+}
+
+.description {
+  font-size: 15px;
+  font-weight: 600;
+  color: #99a4b6ff;
+  line-height: 1.4;
+  letter-spacing: -0.1px;
+  margin: 0;
+  margin-top: 22px;
+}
+
+.card__container:hover {
+  /* Apply a temporary shrink effect when the button is clicked */
+  transform: scale(
+    0.95
+  ); /* You can adjust the scale factor to control the amount of shrinkage */
+}

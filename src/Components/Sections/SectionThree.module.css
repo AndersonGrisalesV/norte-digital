@@ -1,0 +1,68 @@
+.background {
+  background-image: url("../../imgs/background.png"); /* Replace 'path/to/your/image.jpg' with the actual path to your image */
+  background-size: cover; /* Adjust the background size to cover the entire body */
+  background-repeat: no-repeat; /* Prevent the background image from repeating */
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  align-items: end;
+  justify-content: center;
+
+  /* height: 100vh; */
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  align-items: end;
+  max-width: 401px;
+  /* margin-top: 105px; */
+  margin-right: 114px;
+
+  margin-top: 144px;
+}
+
+.content h1 {
+  font-family: "Noto Sans Syriac Eastern", sans-serif;
+  font-size: 48px;
+  font-weight: 900;
+  color: #192843ff;
+  line-height: 1.2;
+  /* letter-spacing: 0.2px; */
+  margin: 0;
+}
+
+.content p {
+  font-size: 16px;
+  font-weight: 600;
+  color: #99a4b6ff;
+  line-height: 1.4;
+  letter-spacing: -0.1px;
+  margin: 0;
+  margin-top: 6px;
+  margin-bottom: 50px;
+}
+
+.images__container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 76px;
+  padding-bottom: 100px;
+}
+
+.image {
+  width: 300px;
+  transition: transform 0.2s; /* Add a transition for the 'transform' property */
+}
+
+.image:hover {
+  /* Apply a temporary shrink effect when the button is clicked */
+  transform: scale(
+    0.95
+  ); /* You can adjust the scale factor to control the amount of shrinkage */
+}

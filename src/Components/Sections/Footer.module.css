@@ -1,0 +1,6 @@
+.image {
+  height: 120px;
+  background-image: url("../../imgs/footer.png"); /* Replace 'path/to/your/image.jpg' with the actual path to your image */
+  background-size: cover; /* Adjust the background size to cover the entire body */
+  background-repeat: no-repeat; /* Prevent the background image from repeating */
+}

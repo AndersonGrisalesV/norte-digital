@@ -1,0 +1,75 @@
+.general__container {
+  display: flex;
+}
+
+.side__panel {
+  width: 90px;
+  height: 100vh;
+  background-image: url("../imgs/side_panel.png"); /* Replace 'path/to/your/image.jpg' with the actual path to your image */
+  background-size: cover; /* Adjust the background size to cover the entire body */
+  background-repeat: no-repeat; /* Prevent the background image from repeating */
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 70px;
+  /* gap: 55px; */
+}
+
+.icons img {
+  width: 20px;
+}
+
+/* Styles for each individual icon container */
+.home,
+.star,
+.docu,
+.file,
+.person {
+  padding-top: 26px;
+  padding-left: 35px;
+  padding-right: 35px;
+  padding-bottom: 26px;
+
+  transition: box-shadow 0.3s ease; /* Smooth transition for the box-shadow effect */
+}
+
+/* Shadow effect on hover */
+.home:hover,
+.star:hover,
+.docu:hover,
+.file:hover,
+.person:hover {
+  background-color: #147cc9ff;
+}
+
+.container__new__sale {
+  display: flex;
+  flex-direction: column;
+}
+
+.container__title {
+  display: flex;
+  flex-direction: row;
+  gap: 28px;
+}
+
+.container__title h1 {
+  font-size: 48px;
+  font-weight: 800;
+  color: #192843ff;
+  line-height: 1.2;
+  /* letter-spacing: 0.2px; */
+  margin: 0;
+}
+
+.new__sale__person {
+  width: 60px;
+}
+
+.new__sale__divider {
+  display: flex;
+  flex-direction: column;
+}

@@ -1,16 +1,39 @@
+/* Navbar.module.css */
+
 .navbar__container {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
   margin-right: 32px;
   margin-top: 32px;
+  position: sticky;
 }
 
 .navbar ul {
   list-style: none;
   display: flex;
+  padding: 0; /* Remove the default padding from the ul element */
 }
 
 .navbar li {
   margin-left: 32px;
+}
+
+/* Target the anchor tags inside li elements rendered by Link components */
+.navbar li a {
+  text-decoration: none; /* Remove the default underline */
+  color: #192843ff; /* Add your desired text color */
+  font-weight: 900;
+}
+
+/* Add a custom active class to apply styles when an li is active */
+.navbar li a.active {
+  /* Add styles for the active link, for example, change the text color to white and background color to blue */
+  background-color: #279aff;
+  color: #fff;
+}
+
+/* Apply a different color to the links when hovering */
+.navbar li a:hover {
+  color: #279aff; /* Change to your desired hover color */
 }

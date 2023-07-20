@@ -5,8 +5,6 @@ import heroImage from "../../../src/imgs/hero_image.png";
 const SectionOne = () => {
   return (
     <div className={styles.container}>
-      {/* Navbar */}
-
       <div className={styles.container__hero__content}>
         {/* Content Section */}
         <div className={styles.content}>
