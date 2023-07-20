@@ -1,0 +1,20 @@
+.button {
+  font-family: "Noto Sans Syriac Eastern", sans-serif;
+  color: #fff;
+  cursor: pointer;
+  background-color: #279affff;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  padding: 12px 28px 11px 28px;
+
+  border: none;
+  transition: transform 0.2s; /* Add a transition for the 'transform' property */
+}
+
+.button:active {
+  /* Apply a temporary shrink effect when the button is clicked */
+  transform: scale(
+    0.95
+  ); /* You can adjust the scale factor to control the amount of shrinkage */
+}
