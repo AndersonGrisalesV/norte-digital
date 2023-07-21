@@ -60,3 +60,9 @@
     0.95
   ); /* You can adjust the scale factor to control the amount of shrinkage */
 }
+
+.disabled {
+  /* Your button styles for the disabled state go here */
+  background-color: #686262; /* Example: Set a grey background color */
+  cursor: not-allowed; /* Example: Show a "not-allowed" cursor to indicate it's disabled */
+}

@@ -1,7 +1,7 @@
 import Button from "../Button/Button";
 import styles from "./AddedSale.module.css";
 
-const AddedSale = ({ name, quantity, price, subtotal }) => {
+const AddedSale = ({ name, quantity, price, subtotal, onRemove=null }) => {
   return (
     <div className={styles.container__details__inputs}>
       <div className={styles.container__name__input}>
@@ -33,7 +33,7 @@ const AddedSale = ({ name, quantity, price, subtotal }) => {
         </div>
       </div>
       <div className={styles.container__button__remove}>
-        <Button onRemoveSale={true} />
+        <Button onRemoveSale={onRemove} />
       </div>
     </div>
   );

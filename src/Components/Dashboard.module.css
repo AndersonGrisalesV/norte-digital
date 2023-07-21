@@ -1,14 +1,26 @@
+.container__outside {
+  display: flex;
+  justify-content: center;
+  background-color: #f6f7faff;
+  position: relative;
+  /* height: 100vh; */
+  background-repeat: repeat;
+}
+
 .general__container {
   display: flex;
-  background-color: #f6f7faff;
+  position: relative;
 }
 
 .side__panel {
   width: 80px;
-  /* height: 100vh; */
-  background-image: url("../imgs/side_panel.png"); /* Replace 'path/to/your/image.jpg' with the actual path to your image */
-  background-size: cover; /* Adjust the background size to cover the entire body */
-  background-repeat: no-repeat; /* Prevent the background image from repeating */
+  height: 100vh;
+  z-index: 1;
+  position: fixed;
+  left: 0;
+  background-image: url("/src/imgs/side_panel.png");
+  background-size: cover;
+  background-repeat: repeat-y;
 }
 
 .icons {
@@ -50,6 +62,7 @@
 .container__new__sale {
   display: flex;
   flex-direction: column;
+  padding-left: 84px;
 }
 
 .container__title {
@@ -101,23 +114,32 @@
   gap: 151px;
 }
 
+.container__client__input_error__correction {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 151px;
+}
+
 .container__client__text {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  position: relative;
   gap: 6px;
 }
 
-.container__client__input label {
+.container__client__input input,
+.container__client__input_error__correction label {
   display: flex;
   justify-content: center;
   font-size: 14px;
   letter-spacing: 0.1px;
-
   color: #99a4b6ff;
 }
 
-.container__client__input input {
+.container__client__input input,
+.container__client__input_error__correction input {
   width: 135%;
   padding: 10px 15px;
   padding-right: 40px;
@@ -128,9 +150,58 @@
   /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); */
 }
 
-.container__client__input input:focus {
+.container__client__input input,
+.container__client__input_error__correction input:focus {
   outline: none;
   box-shadow: 0 0 0 2px #279affff;
+}
+
+.container__error__success {
+  display: flex;
+}
+
+.error__existing__user {
+  font-size: 14px;
+  margin: 0px;
+  padding: 0px;
+  color: #c4483f;
+}
+
+.success__added__user {
+  font-size: 14px;
+  margin: 0px;
+  padding: 0px;
+  color: #3fc472;
+}
+
+/* CSS for the overlay */
+.overlay {
+  font-family: "Noto Sans Syriac Eastern", sans-serif;
+  top: 65px;
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+  width: 159%;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+/* CSS for the client list */
+.client__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.client__list li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.client__list li:hover {
+  background-color: #f5f5f5;
 }
 
 .container__branch__input {
@@ -166,6 +237,18 @@
 .container__branch__input input:focus {
   outline: none;
   box-shadow: 0 0 0 2px #279affff;
+}
+
+.overlay__branches {
+  top: 373px;
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  width: 28.9%;
+  z-index: 1;
+  overflow-y: auto;
+  overflow-x: auto;
 }
 
 .container__currency__input {
