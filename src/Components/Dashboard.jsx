@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import IconHome from "../imgs/icon_home.png";
 import IconStar from "../imgs/icon_star.png";
@@ -46,11 +46,18 @@ const Dashboard = () => {
   const [showOverlayBranches, setShowOverlayBranches] = useState(false);
 
   const [currency, setCurrency] = useState("");
+
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [existingProduct, setExistingProduct] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [name, setName] = useState("");
-  const [quantity, setQuantity] = useState(0);
-  const [price, setPrice] = useState(0);
-  const [subtotal, setSubtotal] = useState(0);
-  const [total, setTotal] = useState(0);
+  const [quantity, setQuantity] = useState("");
+  const [price, setPrice] = useState("");
+  const [subtotal, setSubtotal] = useState("");
+
+  const [showOverlayProduct, setShowOverlayProduct] = useState(false);
+
+  const [total, setTotal] = useState("");
   const [addedSale, setAddedSale] = useState(false);
   const [arraySales, setArraySales] = useState([]);
 
@@ -66,6 +73,9 @@ const Dashboard = () => {
     if (userInput === "") {
       setShowOverlayClient(false);
       setClient("");
+      setSelectedClient(false);
+      setSelectedBranch(false);
+      setSelectedProduct(false);
 
       // setBranch("");
       // setCurrency("");
@@ -93,10 +103,10 @@ const Dashboard = () => {
         return existingClients.length > 0;
       };
 
-      const userExists = checkUserExists(dataArray, userInput);
+      const userExists = checkUserExists(data, userInput);
 
-      if (!selectedClient) {
-        setExistingUser(userExists);
+      if (userExists && !selectedClient) {
+        setExistingUser(false);
       } else if (userInput !== "") {
         setExistingUser(null);
       }
@@ -113,7 +123,7 @@ const Dashboard = () => {
   };
 
   const handleClientBlur = () => {
-    //  setShowOverlay(false);
+    // setShowOverlayClient(false);
     // if (selectedClient) {
     //   console.log(selectedClient);
     //   setClient(selectedClient.name);
@@ -131,11 +141,18 @@ const Dashboard = () => {
     setClient(clientData.name);
     setBranch(clientData.branchOffice);
     setCurrency(countryCurrencyMap[clientData.branchOffice]);
-
+    setName("");
+    setQuantity("");
+    setPrice("");
+    setSubtotal("");
+    setExistingUser(false);
     setShowOverlayClient(false);
   };
 
   const handleAddNewClient = () => {
+    setShowOverlayClient(false);
+    setShowOverlayBranches(false);
+
     const generateRandomNumber = (min, max) => {
       return Math.floor(Math.random() * (max - min + 1) + min);
     };
@@ -165,34 +182,42 @@ const Dashboard = () => {
       branchOffice: branch,
       address: {
         street: client + " Street",
-        number: generateRandomNumber,
+        number: generateRandomNumber(1, 100), // Replace this with a random number generation method
         commune: "New Client Commune",
         city: "New Client City",
       },
       phone: "New Client Phone",
     };
 
-    // Update the state or push the new client to the clients array
-    const updatedClients = [...dataArray.clients, newClient];
+    // Check if the client already exists in the clients array BY NAME
+    const isClientExisting = data.clients.some(
+      (existingClient) => existingClient.name === client
+    );
 
-    setData((prevData) => ({
-      ...prevData,
-      clients: [...prevData.clients, newClient],
-    }));
+    if (isClientExisting) {
+      // Client already exists, set existingUser state to true
+      setExistingUser(true);
+    } else {
+      // Client is new, add it to the clients array
+      setData((prevData) => ({
+        ...prevData,
+        clients: [...prevData.clients, newClient],
+      }));
 
-    // For demonstration purposes, I'm printing the updated clients array
-    console.log(updatedClients);
+      // For demonstration purposes, I'm printing the updated clients array
+      console.log(data.clients);
 
-    // Now you can use the updatedClients array in your application state
-    setSuccessAddedUser(true);
-    // Reset successAddedUser to false after 300 seconds (5 minutes)
-    setTimeout(() => {
-      setSuccessAddedUser(false);
-      setClient("");
-      setBranch("");
-      setCurrency("");
-      // setSelectedBranch(false);
-    }, 3000); // 300 seconds (5 minutes) in millisecond
+      // Now you can use the updatedClients array in your application state
+      setSuccessAddedUser(true);
+      // Reset successAddedUser to false after 300 seconds (5 minutes)
+      setTimeout(() => {
+        setSuccessAddedUser(false);
+        setClient("");
+        setBranch("");
+        setCurrency("");
+        setExistingUser(false); // Reset the existingUser state as well
+      }, 3000); // 300 seconds (5 minutes) in milliseconds
+    }
   };
 
   const handleBranchChange = (event) => {
@@ -207,15 +232,13 @@ const Dashboard = () => {
     } else {
       // Filter the clients based on the user's input
 
-      const AllBranches = dataArray.branchOffices.filter((branch) =>
+      const AllBranches = data.branchOffices.filter((branch) =>
         branch.toLowerCase().includes(userBranch.toLowerCase())
       );
       // Limit the number of matching clients to 5
       const limitedMatchingBranches = AllBranches.slice(0, 5);
 
       setAllBranches(limitedMatchingBranches);
-
-      console.log(dataArray.branchOffices);
 
       // Show the overlay only if there are matching clients
       setShowOverlayBranches(AllBranches.length > 0);
@@ -258,15 +281,88 @@ const Dashboard = () => {
   };
 
   const handleNameChange = (event) => {
-    setName(event.target.value);
+    const userName = event.target.value;
+
+    setName(userName);
+
+    if (userName === "") {
+      setShowOverlayProduct(false);
+      setName("");
+
+      // setBranch("");
+      // setCurrency("");
+    } else {
+      // Filter the clients based on the user's input
+      const matchingProducts = data.products.filter(
+        (product) =>
+          product.name.toLowerCase().includes(userName.toLowerCase()) &&
+          product.branch.toLowerCase() === branch.toLowerCase()
+      );
+      // Limit the number of matching clients to 5
+      const limitedMatchingProducts = matchingProducts.slice(0, 5);
+
+      setFilteredProducts(limitedMatchingProducts);
+      // console.log(filteredClients)
+      // Show the overlay only if there are matching clients
+      setShowOverlayProduct(limitedMatchingProducts.length > 0);
+
+      // if (!selectedProduct) {
+      //   setExistingProduct(false);
+      // } else if (userName !== "") {
+      //   setExistingProduct(null);
+      // }
+      //Delete this up
+    }
+    if (userName !== name) {
+      setSelectedProduct(null);
+    }
   };
 
   const handleQuantityChange = (event) => {
-    setQuantity(event.target.value);
+    const quantityValue = parseInt(event.target.value); // Convert the input value to an integer
+
+    if (quantityValue > 0 && quantityValue <= selectedProduct.stock) {
+      // If the quantityValue is within the valid range
+      setQuantity(quantityValue);
+      setSubtotal(quantityValue === 0 ? 0 : price * quantityValue);
+    } else {
+      // If the quantityValue is not within the valid range, set the input value to an empty string
+      event.target.value = "";
+    }
   };
 
   const handlePriceChange = (event) => {
-    setPrice(event.target.value);
+    const priceValue = event.target.value;
+
+    // Check if the input value is negative or less than 1
+    if (priceValue < 1) {
+      // If it's negative or less than 1, set the input value to 1
+      setPrice(1);
+      setSubtotal(quantity === "" || quantity < 1 ? 1 : 1 * quantity);
+    } else {
+      // If it's greater than or equal to 1, update the state with the entered value
+      setPrice(priceValue);
+      setSubtotal(
+        quantity === "" || quantity < 1 ? priceValue : priceValue * quantity
+      );
+    }
+  };
+
+  const handleProductSelect = (productData) => {
+    console.log(productData);
+
+    setSelectedProduct(productData);
+
+    // Assuming you have an array called "clientsDataArray" containing all the client data
+    // const matchingClient = clientData.find((client) => client.RUT === clientData.RUT);
+
+    setName(productData.name);
+    setQuantity(productData.stock);
+    setPrice(productData.price);
+    setSubtotal(productData.price * productData.stock);
+    setExistingProduct(false);
+
+    setShowOverlayProduct(false);
   };
 
   const handleSubtotalChange = (event) => {
@@ -287,14 +383,51 @@ const Dashboard = () => {
     };
     // Use the setArraySales function to update the state with the new sale
     setArraySales((prevArraySales) => [...prevArraySales, newSale]);
+
+    const newProduct = {
+      id: selectedProduct.id,
+      name: selectedProduct.name,
+      price: selectedProduct.price,
+      stock: selectedProduct.stock,
+      branch: selectedProduct.branch,
+    };
+
+    setData((prevData) => {
+      const productsCopy = [...prevData.products];
+      const productIndex = productsCopy.findIndex(
+        (product) => product.id === newProduct.id
+      );
+
+      if (productIndex !== -1) {
+        // If the product is found, reduce the stock by 1
+        if (productsCopy[productIndex].stock > 0) {
+          productsCopy[productIndex].stock -= quantity;
+        } else {
+          // If the stock is already 0 or negative, remove the product from the array
+          productsCopy.splice(productIndex, 1);
+        }
+      }
+
+      return {
+        ...prevData,
+        products: [...productsCopy],
+      };
+    });
+
+    setName("");
+    setQuantity("");
+    setPrice("");
+    setSubtotal("");
+    setSelectedProduct(false);
   };
 
   const handleRemoveSale = (index) => {
     if (index == -1) {
       setName("");
-      setQuantity(0);
-      setPrice(0);
-      setSubtotal(0);
+      setQuantity("");
+      setPrice("");
+      setSubtotal("");
+      setSelectedProduct(false);
     } else {
       const updatedSales = [...arraySales];
 
@@ -308,6 +441,17 @@ const Dashboard = () => {
       }
     }
   };
+
+  // Calculate the total sum of subtotals
+  useEffect(() => {
+    const totalSubtotals = arraySales.reduce(
+      (acc, sale) => acc + parseInt(sale.subtotal, 10), // Parse sale.subtotal before adding it
+      0
+    );
+
+    // Update the total state
+    setTotal(totalSubtotals);
+  }, [arraySales]);
 
   return (
     <div className={styles.container__outside}>
@@ -349,7 +493,10 @@ const Dashboard = () => {
           </div>
 
           <div className={styles.container__client}>
-            <h1>Document</h1>
+            <div className={styles.container__divider}>
+              <h1>Document</h1>
+              <hr className={styles.horizontal__divider} />
+            </div>
             <div className={styles.container__inputs}>
               <div
                 className={
@@ -363,9 +510,10 @@ const Dashboard = () => {
                   <input
                     id="client"
                     value={client}
+                    placeholder="Name"
                     type="text"
                     onChange={handleClientChange}
-                    onBlur={handleClientBlur}
+                    // onBlur={handleClientBlur}
                     // onFocus={handleClientFocus}
                   />
                   {existingUser && (
@@ -399,8 +547,8 @@ const Dashboard = () => {
                     </div>
                   )}
                   {/* Overlay Client*/}
-                  {showOverlayClient && (
-                    <div className={styles.overlay}>
+                  <div className={styles.overlay}>
+                    {showOverlayClient && (
                       <ul className={styles.client__list}>
                         {filteredClients.map((clientName) => (
                           <li
@@ -411,8 +559,8 @@ const Dashboard = () => {
                           </li>
                         ))}
                       </ul>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
                 <div className={styles.container__button}>
                   <Button
@@ -431,6 +579,7 @@ const Dashboard = () => {
                   <input
                     id="branch"
                     value={branch}
+                    placeholder="Type the branch office (e.g., Colombia)"
                     type="text"
                     onChange={handleBranchChange}
                     disabled={selectedClient ? true : false}
@@ -469,7 +618,10 @@ const Dashboard = () => {
           </div>
 
           <div className={styles.container__details}>
-            <h1>Details</h1>
+            <div className={styles.container__divider}>
+              <h1>Details</h1>
+              <hr className={styles.horizontal__divider} />
+            </div>
             <div className={styles.container__details__inputs}>
               <div className={styles.container__name__input}>
                 <div className={styles.container__name__text}>
@@ -477,16 +629,28 @@ const Dashboard = () => {
                   <input
                     id="name"
                     value={name}
+                    placeholder="Product"
                     type="text"
                     onChange={handleNameChange}
-                    disabled={
-                      (client && branch && currency) ||
-                      selectedClient ||
-                      selectedBranch
-                        ? false
-                        : true
-                    }
+                    disabled={selectedClient ? false : true}
                   />
+
+                  {/* Overlay Product*/}
+
+                  {showOverlayProduct && (
+                    <div className={styles.overlay__products}>
+                      <ul className={styles.client__list}>
+                        {filteredProducts.map((productName) => (
+                          <li
+                            key={productName.id}
+                            onClick={() => handleProductSelect(productName)}
+                          >
+                            {productName.name}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
               </div>
               <div className={styles.container__quantity__input}>
@@ -495,16 +659,11 @@ const Dashboard = () => {
                   <input
                     id="quantity"
                     value={quantity}
+                    placeholder="0"
                     type="number"
                     inputMode="numeric"
                     onChange={handleQuantityChange}
-                    disabled={
-                      (client && branch && currency) ||
-                      selectedClient ||
-                      selectedBranch
-                        ? false
-                        : true
-                    }
+                    disabled={selectedClient ? false : true}
                   />
                 </div>
               </div>
@@ -515,15 +674,10 @@ const Dashboard = () => {
                   <input
                     id="price"
                     value={price}
+                    placeholder="0"
                     type="number"
                     onChange={handlePriceChange}
-                    disabled={
-                      (client && branch && currency) ||
-                      selectedClient ||
-                      selectedBranch
-                        ? false
-                        : true
-                    }
+                    disabled
                   />
                 </div>
               </div>
@@ -534,6 +688,7 @@ const Dashboard = () => {
                   <input
                     id="subtotal"
                     value={subtotal}
+                    placeholder="0"
                     type="text"
                     onChange={handleSubtotalChange}
                     disabled
@@ -543,11 +698,7 @@ const Dashboard = () => {
               <div className={styles.container__button__remove}>
                 <Button
                   onRemoveSale={() => handleRemoveSale(-1)}
-                  onDisable={
-                    selectedClient || !client || !branch || !currency
-                      ? true
-                      : false
-                  }
+                  onDisable={selectedProduct ? false : true}
                 />
               </div>
             </div>
@@ -570,21 +721,37 @@ const Dashboard = () => {
 
           <div className={styles.container__buttons__total}>
             <div className={styles.container__button__add}>
-              <Button onAddSale={handleAddSale} />
+              <Button
+                onAddSale={handleAddSale}
+                onDisable={selectedProduct && quantity !== 0 ? false : true}
+              />
             </div>
+
             <div className={styles.container__total__input}>
               <div className={styles.container__total__text}>
                 <label htmlFor="total">Total</label>
                 <input
                   id="total"
+                  placeholder="0"
                   value={total}
                   type="text"
                   onChange={handleTotalChange}
+                  disabled
                 />
               </div>
             </div>
+            <div className={styles.container__divider__total}>
+              <hr className={styles.horizontal__divider} />
+            </div>
             <div className={styles.container__button__save}>
-              <Button onSave={"Save"} />
+              <Button
+                onSave={"Save"}
+                onDisable={
+                  selectedClient && arraySales.length > 0 && total !== 0
+                    ? false
+                    : true
+                }
+              />
             </div>
           </div>
         </div>

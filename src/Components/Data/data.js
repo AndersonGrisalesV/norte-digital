@@ -19,7 +19,7 @@ const data = {
       name: "Product C",
       price: 10000,
       stock: 1,
-      branch: "",
+      branch: "Japan",
     },
     {
       id: 4,
@@ -54,7 +54,7 @@ const data = {
       name: "Product H",
       price: 5000,
       stock: 5,
-      branch: "",
+      branch: "Japan",
     },
     {
       id: 9,

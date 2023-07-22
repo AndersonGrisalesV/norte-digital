@@ -101,10 +101,37 @@
   max-height: 90%;
 }
 
+.container__divider {
+  display: flex;
+  flex-direction: column-reverse;
+  position: relative;
+  left: 0;
+}
+
+.container__divider h1 {
+  margin-bottom: 6px;
+}
+
+.horizontal__divider {
+  border: none;
+  border-top: 1px solid #19284385;
+  position: absolute;
+  width: 90%;
+}
+
+.container__divider__total {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  left: 0;
+  margin-top: 8px;
+}
+
 .container__inputs {
   display: flex;
   flex-direction: row;
   gap: 36px;
+  margin-top: 4px;
 }
 
 .container__client__input {
@@ -129,15 +156,7 @@
   gap: 6px;
 }
 
-.container__client__input input,
-.container__client__input_error__correction label {
-  display: flex;
-  justify-content: center;
-  font-size: 14px;
-  letter-spacing: 0.1px;
-  color: #99a4b6ff;
-}
-
+/* Styles for input inside .container__client__input and .container__client__input_error__correction */
 .container__client__input input,
 .container__client__input_error__correction input {
   width: 135%;
@@ -147,15 +166,24 @@
   background-color: #fff;
   color: #192843ff;
   font-size: 16px;
-  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); */
 }
 
-.container__client__input input,
+/* Styles for label inside .container__client__input and .container__client__input_error__correction */
+.container__client__input label,
+.container__client__input_error__correction label {
+  display: flex;
+  justify-content: center;
+  font-size: 14px;
+  letter-spacing: 0.1px;
+  color: #99a4b6ff;
+}
+
+/* Styles for focused input inside .container__client__input and .container__client__input_error__correction */
+.container__client__input input:focus,
 .container__client__input_error__correction input:focus {
   outline: none;
   box-shadow: 0 0 0 2px #279affff;
 }
-
 .container__error__success {
   display: flex;
 }
@@ -176,13 +204,12 @@
 
 /* CSS for the overlay */
 .overlay {
-  font-family: "Noto Sans Syriac Eastern", sans-serif;
   top: 65px;
   position: absolute;
   background-color: #fff;
-  border: 1px solid #ccc;
+  border: 0px solid #ccc;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-
+  z-index: 1;
   width: 159%;
   overflow-y: auto;
   overflow-x: auto;
@@ -240,7 +267,7 @@
 }
 
 .overlay__branches {
-  top: 373px;
+  top: 361px;
   position: absolute;
   background-color: #fff;
   border: 1px solid #ccc;
@@ -300,6 +327,7 @@
   flex-direction: row;
   align-items: flex-end;
   gap: 28px;
+  margin-top: 4px;
 }
 
 .container__name__input {
@@ -313,6 +341,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  position: relative;
   gap: 6px;
   padding-right: 180px;
 }
@@ -340,6 +369,18 @@
 .container__name__input input:focus {
   outline: none;
   box-shadow: 0 0 0 2px #279affff;
+}
+
+.overlay__products {
+  top: 65px;
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  width: 99.8%;
+  z-index: 1;
+  overflow-y: auto;
+  overflow-x: auto;
 }
 
 .container__quantity__input {
@@ -474,7 +515,7 @@
   flex-direction: row;
   justify-content: flex-start;
   align-items: baseline;
-  padding-left: 676px;
+  padding-left: 755px;
   gap: 12px;
 }
 
@@ -488,7 +529,7 @@
 }
 
 .container__total__input input {
-  /* width: 50%; */
+  width: 32%;
   padding: 10px 15px;
   /* margin-right: 162px; */
   border: none;
@@ -517,5 +558,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-left: 7.6px;
+  padding-left: 11.6px;
+}
+
+/* Add the following styles for the placeholder */
+input::placeholder {
+  font-size: 14px; /* Set the font size */
+  color: #ccc; /* Set the color to a lighter grey */
 }
