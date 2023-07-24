@@ -67,6 +67,7 @@ const Dashboard = () => {
   const [arraySaleList, setArraySaleList] = useState([]);
 
   const [showSaleList, setShowSaleList] = useState(false);
+  const [turnOnButtonSales, setTurnOnButtonSales] = useState(false);
 
   const [showDetailSale, setShowDetailSale] = useState(false);
 
@@ -565,6 +566,8 @@ const Dashboard = () => {
         return [...prevArray, newSale];
       }
     });
+
+    setTurnOnButtonSales(true);
   };
 
   useEffect(() => {
@@ -595,6 +598,7 @@ const Dashboard = () => {
     setSelectedBranch(false);
     setSelectedProduct(false);
     setAddedProduct(false);
+    setArrayDetails([]);
   };
 
   const handleDetailSale = (detailsSale) => {
@@ -923,7 +927,7 @@ const Dashboard = () => {
               {arraySaleList ? (
                 <Button
                   onSaleList={handleSaleList}
-                  onDisable={showSaleList ? true : false}
+                  onDisable={turnOnButtonSales ? false : true}
                 />
               ) : (
                 ""
