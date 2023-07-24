@@ -2,15 +2,13 @@
 
 <div align="center">
    <a href='https://norte-digital.vercel.app/home'>
-        <img src="https://github.com/AndersonGrisalesV/norte-digital/assets/94204560/71d70214-ebc6-4c39-a302-8381bc2f23cf" width=20% height=20%>
+        <img src="https://user-images.githubusercontent.com/94204560/255455543-470e60d1-a123-4524-b289-4b32e7aaaba7.png" width=20% height=20%>
   </a>
    <div align="center">
       <h6>(Click the Logo to go to the website)</h6> 
     </div>
     
  </div>
-
-
 
 
 
