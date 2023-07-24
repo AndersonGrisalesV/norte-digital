@@ -28,7 +28,7 @@ Asegúrate de tener instalado lo siguiente en tu computadora:
 - copia la direccion de tu directorio y abre esa carpeta con Git bash
 
  ```bash
-cd D:/You_folder"
+cd D:/Your_folder"
 ```
 
 ## Clonar el proyecto
