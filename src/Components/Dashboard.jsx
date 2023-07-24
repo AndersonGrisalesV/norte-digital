@@ -1,16 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import IconHome from "../imgs/icon_home.png";
-import IconStar from "../imgs/icon_star.png";
-import IconDocum from "../imgs/icon_document.png";
-import IconFile from "../imgs/icon_file.png";
-import IconPerson from "../imgs/icon_person.png";
+
 import Divider from "../imgs/divider.png";
 import NewSalePerson from "../imgs/new_sale_person.png";
 import styles from "./Dashboard.module.css";
 import Button from "./Button/Button";
-import AddedSale from "./Sections/AddedSale";
+import AddedProduct from "./AddedProduct/AddedProduct";
 import dataArray from "./Data/data";
+import SidePanel from "./SidePanel/SidePanel";
 
 const countryCurrencyMap = {
   Argentina: "AR",
@@ -29,7 +26,10 @@ const countryCurrencyMap = {
 const Dashboard = () => {
   const navigate = useNavigate();
 
-  const [data, setData] = useState(dataArray);
+  // Deep copy the dataArray using JSON methods
+  const newDataArray = JSON.parse(JSON.stringify(dataArray));
+
+  const [data, setData] = useState(newDataArray);
 
   const [client, setClient] = useState("");
   const [filteredClients, setFilteredClients] = useState([]);
@@ -48,8 +48,10 @@ const Dashboard = () => {
   const [currency, setCurrency] = useState("");
 
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [existingProduct, setExistingProduct] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const [checkIfStillResults, setCheckIfStillResults] = useState(null);
+
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState("");
   const [price, setPrice] = useState("");
@@ -58,8 +60,15 @@ const Dashboard = () => {
   const [showOverlayProduct, setShowOverlayProduct] = useState(false);
 
   const [total, setTotal] = useState("");
+  const [addedProduct, setAddedProduct] = useState(false);
   const [addedSale, setAddedSale] = useState(false);
-  const [arraySales, setArraySales] = useState([]);
+  const [arrayDetails, setArrayDetails] = useState([]);
+
+  const [arraySaleList, setArraySaleList] = useState([]);
+
+  const [showSaleList, setShowSaleList] = useState(false);
+
+  const [showDetailSale, setShowDetailSale] = useState(false);
 
   const handleClickHome = () => {
     navigate("/home");
@@ -89,7 +98,7 @@ const Dashboard = () => {
       const limitedMatchingClients = matchingClients.slice(0, 5);
 
       setFilteredClients(limitedMatchingClients);
-      // console.log(filteredClients)
+
       // Show the overlay only if there are matching clients
       setShowOverlayClient(limitedMatchingClients.length > 0);
 
@@ -102,6 +111,11 @@ const Dashboard = () => {
         // If the length of existingClients is greater than 0, user already exists
         return existingClients.length > 0;
       };
+
+      // Check if in all the array there are still results to show
+      setCheckIfStillResults(
+        matchingClients && limitedMatchingClients.length >= 5 ? true : false
+      );
 
       const userExists = checkUserExists(data, userInput);
 
@@ -116,23 +130,7 @@ const Dashboard = () => {
     }
   };
 
-  const handleClientFocus = () => {
-    if (client !== "") {
-      setShowOverlayClient(true);
-    }
-  };
-
-  const handleClientBlur = () => {
-    // setShowOverlayClient(false);
-    // if (selectedClient) {
-    //   console.log(selectedClient);
-    //   setClient(selectedClient.name);
-    // }
-  };
-
   const handleClientSelect = (clientData) => {
-    console.log(clientData);
-
     setSelectedClient(clientData);
 
     // Assuming you have an array called "clientsDataArray" containing all the client data
@@ -147,6 +145,7 @@ const Dashboard = () => {
     setSubtotal("");
     setExistingUser(false);
     setShowOverlayClient(false);
+    console.log(clientData);
   };
 
   const handleAddNewClient = () => {
@@ -204,19 +203,18 @@ const Dashboard = () => {
         clients: [...prevData.clients, newClient],
       }));
 
-      // For demonstration purposes, I'm printing the updated clients array
-      console.log(data.clients);
-
       // Now you can use the updatedClients array in your application state
       setSuccessAddedUser(true);
-      // Reset successAddedUser to false after 300 seconds (5 minutes)
-      setTimeout(() => {
-        setSuccessAddedUser(false);
-        setClient("");
-        setBranch("");
-        setCurrency("");
-        setExistingUser(false); // Reset the existingUser state as well
-      }, 3000); // 300 seconds (5 minutes) in milliseconds
+      // Reset successAddedUser to false after 300 seconds
+      if (!addedSale) {
+        setTimeout(() => {
+          setSuccessAddedUser(false);
+          setClient("");
+          setBranch("");
+          setCurrency("");
+          setExistingUser(false); // Reset the existingUser state as well
+        }, 3000); // 300 seconds (5 minutes) in milliseconds
+      }
     }
   };
 
@@ -250,8 +248,6 @@ const Dashboard = () => {
   };
 
   const handleBranchSelect = (BranchData) => {
-    console.log(BranchData);
-
     setSelectedBranch(BranchData);
 
     // Assuming you have an array called "clientsDataArray" containing all the client data
@@ -265,7 +261,7 @@ const Dashboard = () => {
   const handleBranchFocus = () => {
     if (!selectedBranch) {
       // Filter the clients based on the user's input
-      const AllBranches = dataArray.branchOffices.filter((branch) => branch);
+      const AllBranches = data.branchOffices.filter((branch) => branch);
 
       // Limit the number of matching clients to 5
       const limitedMatchingBranches = AllBranches.slice(0, 5);
@@ -302,16 +298,9 @@ const Dashboard = () => {
       const limitedMatchingProducts = matchingProducts.slice(0, 5);
 
       setFilteredProducts(limitedMatchingProducts);
-      // console.log(filteredClients)
+
       // Show the overlay only if there are matching clients
       setShowOverlayProduct(limitedMatchingProducts.length > 0);
-
-      // if (!selectedProduct) {
-      //   setExistingProduct(false);
-      // } else if (userName !== "") {
-      //   setExistingProduct(null);
-      // }
-      //Delete this up
     }
     if (userName !== name) {
       setSelectedProduct(null);
@@ -349,18 +338,15 @@ const Dashboard = () => {
   };
 
   const handleProductSelect = (productData) => {
-    console.log(productData);
-
     setSelectedProduct(productData);
 
     // Assuming you have an array called "clientsDataArray" containing all the client data
     // const matchingClient = clientData.find((client) => client.RUT === clientData.RUT);
 
     setName(productData.name);
-    setQuantity(productData.stock);
+    setQuantity(productData.stock === 0 ? 0 : 1);
     setPrice(productData.price);
     setSubtotal(productData.price * productData.stock);
-    setExistingProduct(false);
 
     setShowOverlayProduct(false);
   };
@@ -373,16 +359,20 @@ const Dashboard = () => {
     setTotal(event.target.value);
   };
 
-  const handleAddSale = () => {
-    setAddedSale(true);
-    const newSale = {
+  const handleAddProduct = () => {
+    setAddedProduct(true);
+    const newProductForSale = {
+      id: selectedProduct.id,
       name: name,
       quantity: quantity,
       price: price,
       subtotal: subtotal,
     };
     // Use the setArraySales function to update the state with the new sale
-    setArraySales((prevArraySales) => [...prevArraySales, newSale]);
+    setArrayDetails((prevArrayDetails) => [
+      ...prevArrayDetails,
+      newProductForSale,
+    ]);
 
     const newProduct = {
       id: selectedProduct.id,
@@ -429,11 +419,11 @@ const Dashboard = () => {
       setSubtotal("");
       setSelectedProduct(false);
     } else {
-      const updatedSales = [...arraySales];
+      const updatedSales = [...arrayDetails];
 
       // Remove the sale from the array based on the provided index
       updatedSales.splice(index, 1);
-      setArraySales(updatedSales);
+      setArrayDetails(updatedSales);
 
       // Check if the array is empty, and if so, set addedSale to false
       if (updatedSales.length === 0) {
@@ -444,36 +434,198 @@ const Dashboard = () => {
 
   // Calculate the total sum of subtotals
   useEffect(() => {
-    const totalSubtotals = arraySales.reduce(
+    const totalSubtotals = arrayDetails.reduce(
       (acc, sale) => acc + parseInt(sale.subtotal, 10), // Parse sale.subtotal before adding it
       0
     );
 
     // Update the total state
     setTotal(totalSubtotals);
-  }, [arraySales]);
+  }, [arrayDetails]);
+
+  const handleSaveSale = () => {
+    setAddedSale(true);
+
+    ////////////////////////////////////////////
+    const generateRandomNumber = (min, max) => {
+      return Math.floor(Math.random() * (max - min + 1) + min);
+    };
+
+    const generateID = () => {
+      // Generate random numbers for the RUT
+      const firstPart = generateRandomNumber(10000000, 99999999);
+      const secondPart = generateRandomNumber(0, 9);
+
+      // Combine the random numbers in the format of a RUT
+      const generatedNumber = `${firstPart}-${secondPart}`;
+
+      return generatedNumber;
+    };
+
+    // Generate a unique RUT for the new client
+    const generatedID = generateID();
+
+    // Get the current date
+    const currentDate = new Date();
+
+    // Format the date to "YYYY-MM-DD"
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, "0");
+    const day = String(currentDate.getDate()).padStart(2, "0");
+
+    // Combine the date parts into the desired format
+    const formattedDate = `${year}-${month}-${day}`;
+
+    // Generate a random index within the range of the sellers array length
+    const randomIndex = Math.floor(Math.random() * data.sellers.length);
+
+    // Access a random seller object from the sellers array using the random index
+    const randomSeller = data.sellers[randomIndex];
+
+    // Extract the sellerRUT property from the randomly selected seller object
+    const sellerGeneratedRUT = randomSeller;
+
+    // Function to merge arrayDetails with the same ID
+    const mergeArrayDetails = (details) => {
+      const mergedDetails = [];
+      details.forEach((detail) => {
+        const matchingDetailIndex = mergedDetails.findIndex(
+          (item) => item.id === detail.id
+        );
+        if (matchingDetailIndex !== -1) {
+          // If a matching detail is found, update its quantity and subtotal
+          mergedDetails[matchingDetailIndex].quantity += detail.quantity;
+          mergedDetails[matchingDetailIndex].subtotal +=
+            detail.quantity * detail.price;
+        } else {
+          // If the detail doesn't exist in the array, add it
+          mergedDetails.push(detail);
+        }
+      });
+      return mergedDetails;
+    };
+
+    // New sale data with placeholders for missing fields
+    const newSale = {
+      id: generatedID,
+      date: formattedDate,
+      clientRUT: selectedClient.RUT,
+      sellerRUT: sellerGeneratedRUT,
+      lastName: client + " last name",
+      branch: branch,
+      total: total,
+      details: [
+        ...mergeArrayDetails(arrayDetails), // Spread the new arrayDetails
+      ],
+      currency: currency,
+    };
+
+    setData((prevData) => {
+      // Create a copy of the data.products array
+      const updatedProducts = [...prevData.products];
+
+      // Loop through the arrayDetails and update the products with matching names
+      arrayDetails.forEach((detail) => {
+        const matchingProductIndex = updatedProducts.findIndex(
+          (product) => product.id === detail.id
+        );
+
+        if (matchingProductIndex !== -1) {
+          // If a matching product is found, update its details
+          updatedProducts[matchingProductIndex] = {
+            ...updatedProducts[matchingProductIndex],
+            ...detail,
+          };
+        }
+      });
+
+      // Finally, update the state with the updated products array
+      return {
+        ...prevData,
+        products: updatedProducts,
+        sales: [...prevData.sales, newSale], // Add the newSale to the sales array
+      };
+    });
+
+    // Now you can use the updatedClients array in your application state
+    setAddedSale(newSale);
+
+    // Update the arraySaleList state with the newSale
+
+    // Deep copy the dataArray using JSON methods
+    // const newDataArray = JSON.parse(JSON.stringify(dataArray));
+    // Update the arraySaleList state with the newSale
+    // Update the arraySaleList state
+    setArraySaleList((prevArray) => {
+      // If the previous array is empty, create a new array with the newSale
+      if (prevArray.length === 0) {
+        return [newSale];
+      } else {
+        // If the previous array has existing sales, append the newSale to it
+        return [...prevArray, newSale];
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (addedSale) {
+      // For demonstration purposes, I'm printing the updated clients array
+      console.log("old array");
+      console.log(dataArray);
+      console.log("new array");
+      console.log(data);
+    }
+  }, [data, addedSale]);
+
+  const handleSaleList = () => {
+    setShowSaleList(true);
+  };
+
+  const handleInvoiceClose = () => {
+    setAddedSale(false);
+    setClient("");
+    setBranch("");
+    setCurrency("");
+    setName("");
+    setQuantity("");
+    setPrice("");
+    setSubtotal("");
+    setTotal("");
+    setSelectedClient(false);
+    setSelectedBranch(false);
+    setSelectedProduct(false);
+    setAddedProduct(false);
+  };
+
+  const handleDetailSale = (detailsSale) => {
+    setShowDetailSale(detailsSale);
+  };
+
+  const handleSaleListClose = () => {
+    setShowSaleList(false);
+    setAddedSale(false);
+    setClient("");
+    setBranch("");
+    setCurrency("");
+    setName("");
+    setQuantity("");
+    setPrice("");
+    setSubtotal("");
+    setTotal("");
+    setSelectedClient(false);
+    setSelectedBranch(false);
+    setSelectedProduct(false);
+    setAddedProduct(false);
+  };
+
+  const handleGoBackSaleList = () => {
+    setShowDetailSale(false);
+    setShowSaleList(true);
+  };
 
   return (
     <div className={styles.container__outside}>
-      <div className={styles.side__panel}>
-        <div className={styles.icons}>
-          <div className={styles.home} onClick={handleClickHome}>
-            <img src={IconHome} alt=" home icon" />
-          </div>
-          <div className={styles.star}>
-            <img src={IconStar} alt="star icon" />
-          </div>
-          <div className={styles.docu}>
-            <img src={IconDocum} alt=" document icon" />
-          </div>
-          <div className={styles.file}>
-            <img src={IconFile} alt="file icon" />
-          </div>
-          <div className={styles.person}>
-            <img src={IconPerson} alt="person icon" />
-          </div>
-        </div>
-      </div>
+      <SidePanel onGoHome={handleClickHome} />
       <div className={styles.general__container}>
         <div className={styles.container__new__sale}>
           <div className={styles.container__title}>
@@ -549,16 +701,23 @@ const Dashboard = () => {
                   {/* Overlay Client*/}
                   <div className={styles.overlay}>
                     {showOverlayClient && (
-                      <ul className={styles.client__list}>
-                        {filteredClients.map((clientName) => (
-                          <li
-                            key={clientName.RUT}
-                            onClick={() => handleClientSelect(clientName)}
-                          >
-                            {clientName.name}
-                          </li>
-                        ))}
-                      </ul>
+                      <>
+                        <ul className={styles.client__list}>
+                          {filteredClients.map((clientName) => (
+                            <li
+                              key={clientName.RUT}
+                              onClick={() => handleClientSelect(clientName)}
+                            >
+                              {clientName.name}
+                            </li>
+                          ))}
+                        </ul>
+                        <label>
+                          {checkIfStillResults && client.length <= 1
+                            ? `There are more results with ${client}`
+                            : ``}
+                        </label>
+                      </>
                     )}
                   </div>
                 </div>
@@ -636,7 +795,6 @@ const Dashboard = () => {
                   />
 
                   {/* Overlay Product*/}
-
                   {showOverlayProduct && (
                     <div className={styles.overlay__products}>
                       <ul className={styles.client__list}>
@@ -655,7 +813,12 @@ const Dashboard = () => {
               </div>
               <div className={styles.container__quantity__input}>
                 <div className={styles.container__quantity__text}>
-                  <label htmlFor="quantity">Quantity</label>
+                  <label
+                    htmlFor="quantity"
+                    style={quantity === 0 ? { color: "red" } : {}}
+                  >
+                    Quantity
+                  </label>
                   <input
                     id="quantity"
                     value={quantity}
@@ -664,6 +827,7 @@ const Dashboard = () => {
                     inputMode="numeric"
                     onChange={handleQuantityChange}
                     disabled={selectedClient ? false : true}
+                    style={quantity === 0 ? { color: "red" } : {}}
                   />
                 </div>
               </div>
@@ -702,12 +866,13 @@ const Dashboard = () => {
                 />
               </div>
             </div>
+            <br />
           </div>
 
-          {addedSale && (
+          {addedProduct && (
             <div className={styles.container__added__sales}>
-              {arraySales.map((sale, index) => (
-                <AddedSale
+              {arrayDetails.map((sale, index) => (
+                <AddedProduct
                   key={index}
                   name={sale.name}
                   quantity={sale.quantity}
@@ -722,7 +887,7 @@ const Dashboard = () => {
           <div className={styles.container__buttons__total}>
             <div className={styles.container__button__add}>
               <Button
-                onAddSale={handleAddSale}
+                onAddSale={handleAddProduct}
                 onDisable={selectedProduct && quantity !== 0 ? false : true}
               />
             </div>
@@ -745,16 +910,135 @@ const Dashboard = () => {
             </div>
             <div className={styles.container__button__save}>
               <Button
-                onSave={"Save"}
+                onSave={handleSaveSale}
                 onDisable={
-                  selectedClient && arraySales.length > 0 && total !== 0
+                  selectedClient &&
+                  !selectedProduct &&
+                  arrayDetails.length > 0 &&
+                  total !== 0
                     ? false
                     : true
                 }
               />
+              {arraySaleList ? (
+                <Button
+                  onSaleList={handleSaleList}
+                  onDisable={showSaleList ? true : false}
+                />
+              ) : (
+                ""
+              )}
             </div>
           </div>
         </div>
+        {/* Add the overlay and card for one saved sale */}
+        {addedSale && (
+          <div
+            className={styles.overlay__sale__invoice}
+            onClick={handleInvoiceClose}
+          >
+            <div className={styles.card}>
+              {/* Sale details */}
+              <h2>Sale Details</h2>
+
+              <ul className={styles.sale__details}>
+                <li key={addedSale.id}>
+                  <strong>Client:</strong> {client}
+                  <br />
+                  <strong>Branch Office:</strong> {branch}
+                  <br />
+                  <strong>Currency:</strong> {currency}
+                </li>
+              </ul>
+
+              <h3>Detail products</h3>
+              <ul className={styles.sale__details}>
+                {addedSale.details.map((detail, index) => (
+                  <li key={index}>
+                    <strong>Id:</strong> {detail.id},
+                    <br />
+                    <strong>Name:</strong> {detail.name},
+                    <br />
+                    <strong>Quantity:</strong> {detail.quantity}{" "}
+                  </li>
+                ))}
+              </ul>
+              <p>
+                <strong>Total:</strong> {total}
+              </p>
+              {/* Close button */}
+              <Button onCloseInvoiceSale={handleInvoiceClose} />
+            </div>
+          </div>
+        )}
+        {/* Add the overlay and card for list of sales */}
+        {showSaleList && (
+          <div
+            className={styles.overlay__sale__invoice}
+            onClick={handleSaleListClose}
+          >
+            <div className={styles.card}>
+              {/* Sales */}
+              <h2>Sales</h2>
+
+              <ul className={styles.sale__details}>
+                {JSON.parse(JSON.stringify(arraySaleList)).map(
+                  (sale, index) => (
+                    <li key={index} onClick={() => handleDetailSale(sale)}>
+                      <span>
+                        <strong>Id:</strong> {sale.id}
+                        <br />
+                        <strong>Date:</strong> {sale.date}
+                        <br />
+                        <strong>Seller RUT:</strong>{" "}
+                        {JSON.parse(JSON.stringify(sale.sellerRUT.RUT))}
+                        <br />
+                        <strong>Client RUT:</strong>{" "}
+                        {JSON.parse(JSON.stringify(sale.clientRUT))}
+                      </span>
+                    </li>
+                  )
+                )}
+              </ul>
+
+              {/* Close button */}
+              <Button onCloseInvoiceSale={handleSaleListClose} />
+            </div>
+          </div>
+        )}
+        {/* Add the overlay and card for  detail sale */}
+        {showDetailSale && (
+          <div
+            className={styles.overlay__sale__invoice}
+            onClick={handleGoBackSaleList}
+          >
+            <div className={styles.card}>
+              {/* Sale details */}
+              <h2>Sale Details</h2>
+
+              <ul className={styles.sale__details}>
+                <li key={showDetailSale.id}>
+                  <strong>Sale ID:</strong> {showDetailSale.id}
+                  <br />
+                  <strong>Date:</strong> {showDetailSale.date}
+                  <br />
+                  <strong>Product:</strong> {showDetailSale.details[0].name}
+                  <br />
+                  <strong>Client RUT:</strong> {showDetailSale.clientRUT}
+                  <br />
+                  <strong>Branch Office:</strong> {showDetailSale.branch}
+                  <br />
+                  <strong>Currency:</strong> {showDetailSale.currency}
+                  <br />
+                  <strong>Total:</strong> {showDetailSale.total}
+                </li>
+              </ul>
+
+              {/* Close button */}
+              <Button onCloseSaleList={handleGoBackSaleList} />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

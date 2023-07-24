@@ -1,7 +1,7 @@
 import Button from "../Button/Button";
-import styles from "./AddedSale.module.css";
+import styles from "./AddedProduct.module.css";
 
-const AddedSale = ({ name, quantity, price, subtotal, onRemove=null }) => {
+const AddedProduct = ({ name, quantity, price, subtotal, onRemove = null }) => {
   return (
     <div className={styles.container__details__inputs}>
       <div className={styles.container__name__input}>
@@ -39,4 +39,4 @@ const AddedSale = ({ name, quantity, price, subtotal, onRemove=null }) => {
   );
 };
 
-export default AddedSale;
+export default AddedProduct;

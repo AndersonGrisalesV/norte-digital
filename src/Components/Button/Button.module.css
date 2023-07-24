@@ -7,7 +7,6 @@
   font-weight: 700;
   letter-spacing: 0.4px;
   padding: 12px 28px 10px 28px;
-
   border: none;
   transition: transform 0.2s; /* Add a transition for the 'transform' property */
 }
@@ -21,7 +20,6 @@
   font-weight: 600;
   letter-spacing: 0.4px;
   padding: 6px 12px 6px 12px;
-
   border: none;
   transition: transform 0.2s; /* Add a transition for the 'transform' property */
 }
@@ -35,7 +33,6 @@
   font-weight: 600;
   letter-spacing: 0.4px;
   padding: 12px 38px 10px 38px;
-
   border: none;
   transition: transform 0.2s; /* Add a transition for the 'transform' property */
 }

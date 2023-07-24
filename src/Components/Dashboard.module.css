@@ -3,60 +3,12 @@
   justify-content: center;
   background-color: #f6f7faff;
   position: relative;
-  /* height: 100vh; */
   background-repeat: repeat;
 }
 
 .general__container {
   display: flex;
   position: relative;
-}
-
-.side__panel {
-  width: 80px;
-  height: 100vh;
-  z-index: 1;
-  position: fixed;
-  left: 0;
-  background-image: url("/src/imgs/side_panel.png");
-  background-size: cover;
-  background-repeat: repeat-y;
-}
-
-.icons {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 70px;
-  /* gap: 55px; */
-}
-
-.icons img {
-  width: 20px;
-}
-
-/* Styles for each individual icon container */
-.home,
-.star,
-.docu,
-.file,
-.person {
-  padding-top: 22px;
-  padding-left: 30px;
-  padding-right: 30px;
-  padding-bottom: 22px;
-  cursor: pointer;
-
-  transition: box-shadow 0.3s ease; /* Smooth transition for the box-shadow effect */
-}
-
-/* Shadow effect on hover */
-.home:hover,
-.star:hover,
-.docu:hover,
-.file:hover,
-.person:hover {
-  background-color: #147cc9ff;
 }
 
 .container__new__sale {
@@ -78,7 +30,6 @@
   font-weight: 800;
   color: #192843ff;
   line-height: 1.2;
-  /* letter-spacing: 0.2px; */
   margin-bottom: 6px;
   margin: 0;
 }
@@ -215,7 +166,6 @@
   overflow-x: auto;
 }
 
-/* CSS for the client list */
 .client__list {
   list-style: none;
   padding: 0;
@@ -229,9 +179,6 @@
 
 .client__list li:hover {
   background-color: #f5f5f5;
-}
-
-.container__branch__input {
 }
 
 .container__branch__text {
@@ -258,7 +205,6 @@
   background-color: #fff;
   color: #192843ff;
   font-size: 16px;
-  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); */
 }
 
 .container__branch__input input:focus {
@@ -306,7 +252,6 @@
   background-color: #fff;
   color: #192843ff;
   font-size: 16px;
-  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); */
 }
 
 .container__currency__input input:focus {
@@ -383,10 +328,6 @@
   overflow-x: auto;
 }
 
-.container__quantity__input {
-  /* padding-left: 141px; */
-}
-
 .container__quantity__text {
   display: flex;
   flex-direction: column;
@@ -406,7 +347,6 @@
 .container__quantity__input input {
   width: 50%;
   padding: 10px 15px;
-  /* margin-right: 162px; */
   border: none;
   background-color: #fff;
   color: #192843ff;
@@ -436,14 +376,12 @@
   justify-content: center;
   font-size: 14px;
   letter-spacing: 0.1px;
-
   color: #99a4b6ff;
 }
 
 .container__price__input input {
   width: 50%;
   padding: 10px 15px;
-  /* margin-right: 162px; */
   border: none;
   background-color: #fff;
   color: #192843ff;
@@ -480,7 +418,6 @@
 .container__subtotal__input input {
   width: 50%;
   padding: 10px 15px;
-  /* margin-right: 162px; */
   border: none;
   background-color: #fff;
   color: #192843ff;
@@ -524,14 +461,12 @@
   justify-content: center;
   font-size: 14px;
   letter-spacing: 0.1px;
-
   color: #99a4b6ff;
 }
 
 .container__total__input input {
   width: 32%;
   padding: 10px 15px;
-  /* margin-right: 162px; */
   border: none;
   background-color: #fff;
   color: #192843ff;
@@ -548,6 +483,8 @@
 .container__button__save {
   display: flex;
   justify-content: flex-start;
+  flex-direction: column;
+  gap: 36px;
   align-items: baseline;
   padding-top: 55px;
   padding-left: 886px;
@@ -559,6 +496,89 @@
   flex-direction: column;
   align-items: center;
   padding-left: 11.6px;
+}
+
+.overlay__sale__invoice {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+
+/* Styles for the card inside the overlay */
+.card {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 400px; /* Set the width of the card as needed */
+  max-height: 80vh; /* Limit the height of the card to 80% of the viewport height */
+  overflow-y: auto; /* Enable vertical scrolling if content exceeds the card height */
+}
+
+.card h2 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #192843;
+  margin-bottom: 16px;
+}
+
+.card h3 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #192843;
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+
+.card p {
+  font-size: 16px;
+  color: #192843;
+  margin-bottom: 8px;
+}
+
+.card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.card li {
+  font-size: 14px;
+  color: #192843;
+  margin-bottom: 4px;
+}
+
+.card strong {
+  color: #192843; /* Change this color to your desired light color */
+}
+
+.card button {
+  padding: 8px 16px;
+  margin-top: 16px;
+}
+
+/* Styles for the sale details */
+.sale__details {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sale__details li {
+  color: #666; /* Change this color to your desired light color */
+  padding: 10px;
+  cursor: pointer;
+}
+
+.sale__details li:hover {
+  background-color: #f5f5f5;
 }
 
 /* Add the following styles for the placeholder */

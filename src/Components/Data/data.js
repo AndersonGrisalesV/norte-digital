@@ -154,6 +154,148 @@ const data = {
     "Brasil",
     "Japan",
   ],
+  sellers: [
+    {
+      RUT: "22222222-2",
+      name: "Vendor A",
+      lastName: "Scofield",
+      address: {
+        street: "Street 2",
+        number: "456",
+        commune: "Comune B",
+        city: "City Y",
+      },
+      phone: "+56 9 8765 4321",
+      birthDate: "1990-01-01",
+      email: "vendora@example.com",
+    },
+    {
+      RUT: "44444444-4",
+      name: "Vendor B",
+      lastName: "Johnson",
+      address: {
+        street: "Street 4",
+        number: "101",
+        commune: "Comune D",
+        city: "City W",
+      },
+      phone: "+56 9 1111 9999",
+      birthDate: "1985-06-15",
+      email: "vendorb@example.com",
+    },
+    {
+      RUT: "33333333-3",
+      name: "Vendor C",
+      lastName: "Lee",
+      address: {
+        street: "Street 3",
+        number: "789",
+        commune: "Comune C",
+        city: "City Z",
+      },
+      phone: "+56 9 5555 7777",
+      birthDate: "1988-12-03",
+      email: "vendorc@example.com",
+    },
+    {
+      RUT: "11111111-1",
+      name: "Vendor D",
+      lastName: "Hernandez",
+      address: {
+        street: "Street 7",
+        number: "404",
+        commune: "Comune G",
+        city: "City T",
+      },
+      phone: "+56 9 8888 2222",
+      birthDate: "1995-03-25",
+      email: "vendord@example.com",
+    },
+    {
+      RUT: "88888888-8",
+      name: "Vendor E",
+      lastName: "Martinez",
+      address: {
+        street: "Street 8",
+        number: "505",
+        commune: "Comune H",
+        city: "City S",
+      },
+      phone: "+56 9 3333 1111",
+      birthDate: "1983-09-10",
+      email: "vendore@example.com",
+    },
+    {
+      RUT: "99999999-9",
+      name: "Vendor F",
+      lastName: "Lopez",
+      address: {
+        street: "Street 9",
+        number: "606",
+        commune: "Comune I",
+        city: "City R",
+      },
+      phone: "+56 9 6666 4444",
+      birthDate: "1992-07-12",
+      email: "vendorf@example.com",
+    },
+    {
+      RUT: "12345678-9",
+      name: "Vendor G",
+      lastName: "Kim",
+      address: {
+        street: "Street 10",
+        number: "707",
+        commune: "Comune J",
+        city: "City Q",
+      },
+      phone: "+56 9 9999 0000",
+      birthDate: "1980-11-28",
+      email: "vendorg@example.com",
+    },
+    {
+      RUT: "12222222-9",
+      name: "Vendor G",
+      lastName: "Kim",
+      address: {
+        street: "Street 10",
+        number: "707",
+        commune: "Comune J",
+        city: "City Q",
+      },
+      phone: "+56 9 9999 0000",
+      birthDate: "1980-11-28",
+      email: "vendorg@example.com",
+    },
+    {
+      RUT: "55555555-5",
+      name: "Vendor H",
+      lastName: "Garcia",
+      address: {
+        street: "Street 6",
+        number: "303",
+        commune: "Comune F",
+        city: "City U",
+      },
+      phone: "+56 9 7777 6666",
+      birthDate: "1987-04-20",
+      email: "vendorh@example.com",
+    },
+    {
+      RUT: "88888888-8",
+      name: "Vendor E",
+      lastName: "Martinez",
+      address: {
+        street: "Street 8",
+        number: "505",
+        commune: "Comune H",
+        city: "City S",
+      },
+      phone: "+56 9 3333 1111",
+      birthDate: "1983-09-10",
+      email: "vendore@example.com",
+    },
+  ],
   clients: [
     {
       RUT: "11111111-1",
@@ -291,20 +433,7 @@ const data = {
     {
       id: 1,
       date: "2023-07-20",
-      seller: {
-        RUT: "22222222-2",
-        name: "Vendor A",
-        lastName: "Scofield",
-        address: {
-          street: "Street 2",
-          number: "456",
-          commune: "Comune B",
-          city: "City Y",
-        },
-        phone: "+56 9 8765 4321",
-        birthDate: "1990-01-01",
-        email: "vendora@example.com",
-      },
+      sellerRUT: "22222222-2",
       clientRUT: "11111111-1",
       branch: "Colombia",
       total: 2500,
@@ -327,20 +456,7 @@ const data = {
     {
       id: 2,
       date: "2023-07-21",
-      seller: {
-        RUT: "44444444-4",
-        name: "Vendor B",
-        lastName: "Johnson",
-        address: {
-          street: "Street 4",
-          number: "101",
-          commune: "Comune D",
-          city: "City W",
-        },
-        phone: "+56 9 1111 9999",
-        birthDate: "1985-06-15",
-        email: "vendorb@example.com",
-      },
+      sellerRUT: "44444444-4",
       clientRUT: "55555555-5",
       branch: "Mexico",
       total: 88000,
@@ -357,20 +473,7 @@ const data = {
     {
       id: 3,
       date: "2023-07-22",
-      seller: {
-        RUT: "33333333-3",
-        name: "Vendor C",
-        lastName: "Lee",
-        address: {
-          street: "Street 3",
-          number: "789",
-          commune: "Comune C",
-          city: "City Z",
-        },
-        phone: "+56 9 5555 7777",
-        birthDate: "1988-12-03",
-        email: "vendorc@example.com",
-      },
+      sellerRUT: "33333333-3",
       clientRUT: "66666666-6",
       branch: "Chile",
       total: 9000,
@@ -393,23 +496,10 @@ const data = {
     {
       id: 4,
       date: "2023-07-23",
-      seller: {
-        RUT: "77777777-7",
-        name: "Vendor D",
-        lastName: "Hernandez",
-        address: {
-          street: "Street 7",
-          number: "404",
-          commune: "Comune G",
-          city: "City T",
-        },
-        phone: "+56 9 8888 2222",
-        birthDate: "1995-03-25",
-        email: "vendord@example.com",
-      },
+      sellerRUT: "11111111-1",
       clientRUT: "77777777-7",
       branch: "USA",
-      total: 18000,
+      total: 22000,
       details: [
         {
           name: "Product H",
@@ -430,23 +520,10 @@ const data = {
     {
       id: 5,
       date: "2023-07-24",
-      seller: {
-        RUT: "88888888-8",
-        name: "Vendor E",
-        lastName: "Martinez",
-        address: {
-          street: "Street 8",
-          number: "505",
-          commune: "Comune H",
-          city: "City S",
-        },
-        phone: "+56 9 3333 1111",
-        birthDate: "1983-09-10",
-        email: "vendore@example.com",
-      },
+      sellerRUT: "88888888-8",
       clientRUT: "44444444-4",
       branch: "Peru",
-      total: 18000,
+      total: 88000,
       details: [
         {
           name: "Product J",
@@ -461,23 +538,10 @@ const data = {
     {
       id: 6,
       date: "2023-07-25",
-      seller: {
-        RUT: "99999999-9",
-        name: "Vendor F",
-        lastName: "Lopez",
-        address: {
-          street: "Street 9",
-          number: "606",
-          commune: "Comune I",
-          city: "City R",
-        },
-        phone: "+56 9 6666 4444",
-        birthDate: "1992-07-12",
-        email: "vendorf@example.com",
-      },
+      sellerRUT: "99999999-9",
       clientRUT: "55555555-5",
       branch: "Ecuador",
-      total: 15000,
+      total: 15500,
       details: [
         {
           name: "Product K",
@@ -504,23 +568,10 @@ const data = {
     {
       id: 7,
       date: "2023-07-26",
-      seller: {
-        RUT: "12345678-9",
-        name: "Vendor G",
-        lastName: "Kim",
-        address: {
-          street: "Street 10",
-          number: "707",
-          commune: "Comune J",
-          city: "City Q",
-        },
-        phone: "+56 9 9999 0000",
-        birthDate: "1980-11-28",
-        email: "vendorg@example.com",
-      },
+      sellerRUT: "12345678-9",
       clientRUT: "66666666-6",
       branch: "Mexico",
-      total: 75000,
+      total: 390000,
       details: [
         {
           name: "Product N",
@@ -541,23 +592,10 @@ const data = {
     {
       id: 8,
       date: "2023-07-27",
-      seller: {
-        RUT: "12345678-9",
-        name: "Vendor G",
-        lastName: "Kim",
-        address: {
-          street: "Street 10",
-          number: "707",
-          commune: "Comune J",
-          city: "City Q",
-        },
-        phone: "+56 9 9999 0000",
-        birthDate: "1980-11-28",
-        email: "vendorg@example.com",
-      },
+      sellerRUT: "12222222-9",
       clientRUT: "99999999-9",
       branch: "Colombia",
-      total: 13000,
+      total: 15500,
       details: [
         {
           name: "Product P",
@@ -578,23 +616,10 @@ const data = {
     {
       id: 9,
       date: "2023-07-28",
-      seller: {
-        RUT: "55555555-5",
-        name: "Vendor H",
-        lastName: "Garcia",
-        address: {
-          street: "Street 6",
-          number: "303",
-          commune: "Comune F",
-          city: "City U",
-        },
-        phone: "+56 9 7777 6666",
-        birthDate: "1987-04-20",
-        email: "vendorh@example.com",
-      },
+      sellerRUT: "55555555-5",
       clientRUT: "22222222-2",
       branch: "Chile",
-      total: 9000,
+      total: 15000,
       details: [
         {
           name: "Product R",
@@ -609,23 +634,11 @@ const data = {
     {
       id: 10,
       date: "2023-07-29",
-      seller: {
-        RUT: "88888888-8",
-        name: "Vendor E",
-        lastName: "Martinez",
-        address: {
-          street: "Street 8",
-          number: "505",
-          commune: "Comune H",
-          city: "City S",
-        },
-        phone: "+56 9 3333 1111",
-        birthDate: "1983-09-10",
-        email: "vendore@example.com",
-      },
+      sellerRUT: "88888888-8",
+
       clientRUT: "44444444-4",
       branch: "Argentina",
-      total: 10000,
+      total: 18000,
       details: [
         {
           name: "Product S",

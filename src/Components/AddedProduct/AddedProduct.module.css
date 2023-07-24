@@ -29,11 +29,6 @@
   background-color: #fff;
   color: #192843ff;
   font-size: 16px;
-  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); */
-}
-
-.container__quantity__input {
-  /* padding-left: 141px; */
 }
 
 .container__quantity__text {
@@ -46,7 +41,6 @@
 .container__quantity__input input {
   width: 50%;
   padding: 10px 15px;
-  /* margin-right: 162px; */
   border: none;
   background-color: #fff;
   color: #192843ff;
@@ -69,7 +63,6 @@
 .container__price__input input {
   width: 50%;
   padding: 10px 15px;
-  /* margin-right: 162px; */
   border: none;
   background-color: #fff;
   color: #192843ff;
@@ -92,7 +85,6 @@
 .container__subtotal__input input {
   width: 50%;
   padding: 10px 15px;
-  /* margin-right: 162px; */
   border: none;
   background-color: #fff;
   color: #192843ff;

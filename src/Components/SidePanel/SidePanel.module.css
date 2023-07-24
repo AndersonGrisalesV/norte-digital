@@ -1,0 +1,46 @@
+.side__panel {
+  width: 80px;
+  height: 100vh;
+  z-index: 1;
+  position: fixed;
+  left: 0;
+  background-image: url("/src/imgs/side_panel.png");
+  background-size: cover;
+  background-repeat: repeat-y;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 70px;
+  /* gap: 55px; */
+}
+
+.icons img {
+  width: 20px;
+}
+
+/* Styles for each individual icon container */
+.home,
+.star,
+.docu,
+.file,
+.person {
+  padding-top: 22px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 22px;
+  cursor: pointer;
+
+  transition: box-shadow 0.3s ease; /* Smooth transition for the box-shadow effect */
+}
+
+/* Shadow effect on hover */
+.home:hover,
+.star:hover,
+.docu:hover,
+.file:hover,
+.person:hover {
+  background-color: #147cc9ff;
+}

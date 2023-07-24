@@ -5,9 +5,12 @@ const Button = ({
   onButtonName = null,
   onRemoveSale = null,
   onAddSale = false,
-  onSave = false,
+  onSave = null,
   onDisable = false,
   onPlusHandleClient = null,
+  onCloseInvoiceSale = null,
+  onSaleList = null,
+  onCloseSaleList = null,
 }) => {
   const navigate = useNavigate();
 
@@ -20,6 +23,14 @@ const Button = ({
       onRemoveSale();
     } else if (onPlusHandleClient) {
       onPlusHandleClient();
+    } else if (onSave) {
+      onSave();
+    } else if (onCloseInvoiceSale) {
+      onCloseInvoiceSale();
+    } else if (onSaleList) {
+      onSaleList();
+    } else if (onCloseSaleList) {
+      onCloseSaleList();
     }
   };
 
@@ -47,7 +58,13 @@ const Button = ({
         : onAddSale
         ? "Add"
         : onSave
-        ? onSave
+        ? "Save"
+        : onCloseInvoiceSale
+        ? "Close"
+        : onSaleList
+        ? "Sales"
+        : onCloseSaleList
+        ? "Go back"
         : ""}
     </button>
   );
